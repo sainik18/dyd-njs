@@ -6,8 +6,9 @@ router.get('/', function(req, res, next) {
 });
 
 // controller routes
-const auth = require('../controller/auth');
+const auth = require('../controllers/auth');
 
-router.post('/login', auth.login);
+router.post('/adminRegister', auth.adminRegister);
+router.post('/adminLogin', auth.adminLogin);
 
 module.exports = router;
