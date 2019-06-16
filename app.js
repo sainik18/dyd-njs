@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var mongo = require('./middlewares/mongoConnection');
 
 var app = express();
 
@@ -22,6 +23,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+let db;
+app.use( async (req, res, next) => {
+  if(!db){
+    db = await mongo();
+    req.db = db; 
+    next();
+  }else {
+    req.db = db;
+    next();
+  }
+  
+})
 app.use('/', index);
 app.use('/users', users);
 
