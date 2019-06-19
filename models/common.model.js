@@ -12,6 +12,16 @@ const commonModel = {
             }
         });
 
+    },
+    compareHash(password, hash) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let compare = await bcrypt.compare(password, hash);
+                resolve(compare);
+            } catch (error) {
+                reject(error);
+            }
+        });
     }
 }
 
