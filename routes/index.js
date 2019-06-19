@@ -7,8 +7,10 @@ router.get('/', function(req, res, next) {
 
 // controller routes
 const auth = require('../controllers/auth');
+const quotes = require('../controllers/quotes');
 
 router.post('/adminRegister', auth.adminRegister);
 router.post('/adminLogin', auth.adminLogin);
+router.post('/getquotes', quotes.getQuotes);
 
 module.exports = router;
