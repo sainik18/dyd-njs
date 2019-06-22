@@ -54,7 +54,7 @@ const commonModel = {
             try {
                 let params = {
                     lang: lang,
-                    eng: text 
+                    text: text 
                 };
                 let data = await conn.collection('translate').find(params).toArray();
                 if(data.length > 0){
