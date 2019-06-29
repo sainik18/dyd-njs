@@ -7,10 +7,11 @@ router.get('/', function(req, res, next) {
 
 // controller routes
 const auth = require('../controllers/auth');
-const quotes = require('../controllers/quotes');
+const devotions = require('../controllers/devotions');
 
 router.post('/adminRegister', auth.adminRegister);
 router.post('/adminLogin', auth.adminLogin);
-router.post('/getDevotions', quotes.getQuotes);
+router.post('/getDevotions', devotions.getDevotions);
+router.post('/insertDevotions', devotions.getDevotions);
 
 module.exports = router;
