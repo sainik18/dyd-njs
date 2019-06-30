@@ -1,9 +1,9 @@
 
 const devotionsModel = {
-    getDevotions(conn){
+    getDevotions(conn, coll){
         try {
             return new Promise((resolve, reject) => {
-                let devotions = conn.collection('devotions').find().toArray();
+                let devotions = conn.collection(coll).find().toArray();
                 resolve(devotions);
             });
         } catch (error) {
