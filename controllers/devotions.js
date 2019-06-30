@@ -45,7 +45,7 @@ const devotions = {
         }
 
         let ins = await devotionsModel.insertDevotion(req.db, params, collection);
-        if(ins.length > 0){
+        if(ins.insertedCount > 0){
             res.json({status: true, msg: 'Devotion inserted successfully!'})
         }else {
             res.json({status: false, msg: 'Something Went Wrong!'});

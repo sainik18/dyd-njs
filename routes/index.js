@@ -12,6 +12,6 @@ const devotions = require('../controllers/devotions');
 router.post('/adminRegister', auth.adminRegister);
 router.post('/adminLogin', auth.adminLogin);
 router.post('/getDevotions', devotions.getDevotions);
-router.post('/insertDevotions', devotions.getDevotions);
+router.post('/insertDevotions', devotions.insertDevotion);
 
 module.exports = router;
