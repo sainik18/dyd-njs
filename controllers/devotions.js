@@ -92,12 +92,14 @@ const devotions = {
         const { topic, bible_verse, devotion, prayer, confession, quote_date, lang, _id } = {...req.body};
 
         let params = {
+            $set: {
             topic,
             bible_verse,
             devotion,
             prayer,
             confession,
             quote_date
+            }
         }
         let where = {
             _id: new ObjectId(_id)
