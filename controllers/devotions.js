@@ -31,7 +31,7 @@ const devotions = {
         let devotions = await devotionsModel.getDevotions(req.db, collection);
 
         if(devotions.length > 0){
-            res.json({status: true, data: devotion});
+            res.json({status: true, data: devotions});
         }else {
             res.json({status: false, msg: 'No data found!'});
         }
@@ -82,7 +82,7 @@ const devotions = {
         let devotion = await devotionsModel.getDevotionById(req.db, params, collection);
 
         if(devotion.length > 0){
-            res.json({status: true, data: devotions});
+            res.json({status: true, data: devotion});
         }else {
             res.json({status: false, msg: 'No data found!'});
         }
