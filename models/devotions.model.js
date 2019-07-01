@@ -20,6 +20,16 @@ const devotionsModel = {
             reject(error);
         }
     },
+    getDevotionById(conn, params, coll){
+        try {
+            return new Promise((resolve, reject) => {
+                let devotions = conn.collection(coll).find(params).toArray();
+                resolve(devotions);
+            });
+        } catch (error) {
+            reject(error);
+        }
+    },
     updateDevotion(conn, where, data, coll){
         try {
             return new Promise(async (resolve, reject) => {

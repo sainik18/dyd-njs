@@ -72,6 +72,22 @@ const devotions = {
         }
 
     },
+    getDevotionById: async(req, res) => {
+        const { _id, lang} = {...req.body};
+        let params = {
+            _id: new ObjectId(_id)
+        }
+        let collection = devotions.getCollectionName(lang);
+
+        let devotion = await devotionsModel.getDevotionById(req.db, params, collection);
+
+        if(devotion.length > 0){
+            res.json({status: true, data: devotions});
+        }else {
+            res.json({status: false, msg: 'No data found!'});
+        }
+
+    },
     updateDevotion: async(req, res) => {
         const { topic, bible_verse, devotion, prayer, confession, quote_date, lang, _id } = {...req.body};
 
@@ -109,6 +125,26 @@ const devotions = {
         }else {
             res.json({status: false, msg: 'Something Went Wrong!'});
         }
+    },
+    getCollectionName: (lang = '') => {
+        let collection = 'devotions';
+        if(lang == 'Spanish'){
+            collection = 'devotionsSpanish';
+        }else if(lang == 'French'){
+            collection = 'devotionsFrench';
+        }else if(lang == 'Hausa'){
+            collection = 'devotionsHausa';
+        }else if(lang == 'Yoruba'){
+            collection = 'devotionsYoruba';
+        }else if(lang == 'Igbo'){
+            collection = 'devotionsIgbo';
+        }else if(lang == 'Portuguese'){
+            collection = 'devotionsPortuguese';
+        }else if(lang == 'German'){
+            collection = 'devotionsGerman';
+        }
+
+        return collection;
     }
 
 }
