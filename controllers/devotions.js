@@ -1,5 +1,7 @@
 const devotionsModel = require('../models/devotions.model');
 const commonModel = require('../models/common.model');
+const mongodb = require('mongodb');
+const ObjectId = mongodb.ObjectID;
 
 const devotions = {
     getDevotions: async(req, res) => {
@@ -69,6 +71,44 @@ const devotions = {
             res.json({status: false, msg: 'Something Went Wrong!'});
         }
 
+    },
+    updateDevotion: async(req, res) => {
+        const { topic, bible_verse, devotion, prayer, confession, quote_date, lang, _id } = {...req.body};
+
+        let params = {
+            topic,
+            bible_verse,
+            devotion,
+            prayer,
+            confession,
+            quote_date
+        }
+        let where = {
+            _id: new ObjectId(_id)
+        }
+        let collection = 'devotions';
+        if(lang == 'Spanish'){
+            collection = 'devotionsSpanish';
+        }else if(lang == 'French'){
+            collection = 'devotionsFrench';
+        }else if(lang == 'Hausa'){
+            collection = 'devotionsHausa';
+        }else if(lang == 'Yoruba'){
+            collection = 'devotionsYoruba';
+        }else if(lang == 'Igbo'){
+            collection = 'devotionsIgbo';
+        }else if(lang == 'Portuguese'){
+            collection = 'devotionsPortuguese';
+        }else if(lang == 'German'){
+            collection = 'devotionsGerman';
+        }
+
+        let update = await devotionsModel.updateDevotion(req.db, where, params, collection);
+        if(update == true){
+            res.json({status: true, msg: 'Devotion updated successfully!'})
+        }else {
+            res.json({status: false, msg: 'Something Went Wrong!'});
+        }
     }
 
 }

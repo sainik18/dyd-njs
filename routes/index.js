@@ -13,5 +13,6 @@ router.post('/adminRegister', auth.adminRegister);
 router.post('/adminLogin', auth.adminLogin);
 router.post('/getDevotions', devotions.getDevotions);
 router.post('/insertDevotions', devotions.insertDevotion);
+router.post('/updateDevotion', devotions.updateDevotion);
 
 module.exports = router;

@@ -19,6 +19,16 @@ const devotionsModel = {
         } catch (error) {
             reject(error);
         }
+    },
+    updateDevotion(conn, where, data, coll){
+        try {
+            return new Promise(async (resolve, reject) => {
+                let update = await conn.collection(coll).updateOne(where, data, { upsert: true });
+                resolve(true);
+            })
+        } catch (error) {
+            reject(error);
+        }
     }
 }
 
