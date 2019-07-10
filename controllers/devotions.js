@@ -91,8 +91,7 @@ const devotions = {
     getDevotionByDate: async(req, res) => {
         const {quote_date, lang} = {...req.body};
         let params = {
-            quote_date,
-            lang
+            quote_date
         }
         let collection = devotions.getCollectionName(lang);
 
