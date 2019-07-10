@@ -13,6 +13,7 @@ router.post('/adminRegister', auth.adminRegister);
 router.post('/adminLogin', auth.adminLogin);
 router.post('/getDevotions', devotions.getDevotions);
 router.post('/getDevotionById', devotions.getDevotionById);
+router.post('/getDevotionByDate', devotions.getDevotionByDate);
 router.post('/insertDevotions', devotions.insertDevotion);
 router.post('/updateDevotion', devotions.updateDevotion);
 

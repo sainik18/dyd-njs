@@ -88,6 +88,23 @@ const devotions = {
         }
 
     },
+    getDevotionByDate: async(req, res) => {
+        const {date, lang} = {...req.body};
+        let params = {
+            date,
+            lang
+        }
+        let collection = devotions.getCollectionName(lang);
+
+        let devotion = await devotionsModel.getDevotionById(req.db, params, collection);
+
+        if(devotion.length > 0){
+            res.json({status: true, data: devotion});
+        }else {
+            res.json({status: false, msg: 'No data found!'});
+        }
+
+    },
     updateDevotion: async(req, res) => {
         const { topic, bible_verse, devotion, prayer, confession, quote_date, lang, _id } = {...req.body};
 
