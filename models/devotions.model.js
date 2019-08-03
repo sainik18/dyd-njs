@@ -39,6 +39,26 @@ const devotionsModel = {
         } catch (error) {
             reject(error);
         }
+    },
+    getVerse(conn, params){
+        try {
+            return new Promise(async (resolve, reject) => {
+                let data = await conn.collection('verse').find(params).toArray();
+                resolve(data);
+            })
+        } catch (error) {
+            reject(error);
+        }
+    },
+    updateVerse(conn, where, data){
+        try {
+            return new Promise(async (resolve, reject) => {
+                let update = await conn.collection('verse').updateOne(where, data, { upsert: true });
+                resolve(true);
+            });
+        } catch (error) {
+            reject(error);
+        }
     }
 }
 
