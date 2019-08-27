@@ -59,6 +59,16 @@ const devotionsModel = {
         } catch (error) {
             reject(error);
         }
+    },
+    getTestimonies(conn) {
+        try {
+            return new Promise(async (resolve, reject) => {
+                let data = await conn.collection('testimonies').find().toArray();
+                resolve(data);
+            })
+        } catch (error) {
+            reject(error);
+        }
     }
 }
 

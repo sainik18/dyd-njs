@@ -192,6 +192,22 @@ const devotions = {
         }
 
     },
+    getTestimonies: async() => {
+        let testiData = await devotionsModel.getTestimonies(req.db);
+        if(testiData.length > 0){
+            res.json({success: true, data: testiData});
+        }else {
+            res.json({success: false, msg: 'no data found!'});
+        }
+    },
+    updateTestimonies: async(req, res) => {
+        let update = await devotionsModel.updateTestimonies(req.db, req);
+        if(update.length > 0){
+            res.json({success: true, msg: 'Updated Successfully!'});
+        }else {
+            res.json({success: false, msg: 'Something Went Wrong!'});
+        }
+    },
     getCollectionName: (lang = '') => {
         let collection = 'devotions';
         if (lang == 'Spanish') {

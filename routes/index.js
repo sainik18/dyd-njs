@@ -18,5 +18,7 @@ router.post('/getDevotionByDates', devotions.getDevotionByDates);
 router.post('/insertDevotions', devotions.insertDevotion);
 router.post('/updateDevotion', devotions.updateDevotion);
 router.post('/getVerse', devotions.getVerse);
+router.post('/getTestimonies', devotions.getTestimonies);
+router.post('/updateTestimonies', devotions.updateTestimonies);
 
 module.exports = router;
