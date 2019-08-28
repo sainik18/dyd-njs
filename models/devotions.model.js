@@ -69,6 +69,22 @@ const devotionsModel = {
         } catch (error) {
             reject(error);
         }
+    },
+    updateTestimonies(conn, req) {
+        try {
+            return new Promise(async (resolve, reject) => {
+                let params = {
+                    $set: {...req.body}
+                }
+                let data = await conn.collection('testimonies').updateMany({},params, { upsert: true});
+                resolve(data);
+            })
+        } catch (error) {
+            reject(error);
+        }
+
+        
+        
     }
 }
 
