@@ -8,7 +8,6 @@ router.get('/', function(req, res, next) {
 // controller routes
 const auth = require('../controllers/auth');
 const devotions = require('../controllers/devotions');
-
 router.post('/adminRegister', auth.adminRegister);
 router.post('/adminLogin', auth.adminLogin);
 router.post('/getDevotions', devotions.getDevotions);
