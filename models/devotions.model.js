@@ -82,9 +82,30 @@ const devotionsModel = {
         } catch (error) {
             reject(error);
         }
-
         
-        
+    },
+    getConfession(conn) {
+        try {
+            return new Promise(async (resolve, reject) => {
+                let data = await conn.collection('confession').find().toArray();
+                resolve(data);
+            })
+        } catch (error) {
+            reject(error);
+        }
+    },
+    updateConfession(conn, req) {
+        try {
+            return new Promise(async (resolve, reject) => {
+                let params = {
+                    $set: {...req.body}
+                }
+                let data = await conn.collection('confession').updateMany({},params, { upsert: true});
+                resolve(data);
+            })
+        } catch (error) {
+            reject(error);
+        }
     }
 }
 

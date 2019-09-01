@@ -208,6 +208,22 @@ const devotions = {
             res.json({status: false, msg: 'Something Went Wrong!'});
         }
     },
+    getConfession: async(req, res) => {
+        let confData = await devotionsModel.getConfession(req.db);
+        if(confData.length > 0){
+            res.json({success: true, data: confData});
+        }else {
+            res.json({status: false, msg: 'no data found!'});
+        }
+    },
+    updateConfession: async(req, res) => {
+        let update = await devotionsModel.updateConfession(req.db, req);
+        if(update.result){
+            res.json({status: true, msg: 'Updated Successfully!'});
+        }else {
+            res.json({status: false, msg: 'Something Went Wrong!'});
+        }
+    },
     getCollectionName: (lang = '') => {
         let collection = 'devotions';
         if (lang == 'Spanish') {

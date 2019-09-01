@@ -19,5 +19,7 @@ router.post('/updateDevotion', devotions.updateDevotion);
 router.post('/getVerse', devotions.getVerse);
 router.post('/getTestimonies', devotions.getTestimonies);
 router.post('/updateTestimonies', devotions.updateTestimonies);
+router.post('/getConfession', devotions.getConfession);
+router.post('/updateConfession', devotions.updateConfession);
 
 module.exports = router;
