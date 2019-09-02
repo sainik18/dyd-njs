@@ -42,6 +42,7 @@ app.use( async (req, res, next) => {
 })
 app.use('/', index);
 app.use('/users', users);
+app.use(express.bodyParser({limit: '50mb'}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
