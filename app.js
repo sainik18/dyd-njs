@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var urlrequest = require('url-request-log');
+const multer = require('multer');
+const upload = multer({dest: __dirname + '/uploads/images'});
 
 
 var index = require('./routes/index');
@@ -23,10 +25,12 @@ app.set('view engine', 'pug');
 app.use(cors());
 app.use(logger('dev'));
 app.use(urlrequest.log());
+app.use(bodyParser.json({limit: '50mb', type: 'application/json'}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 let db;
 app.use( async (req, res, next) => {
@@ -41,8 +45,14 @@ app.use( async (req, res, next) => {
   
 })
 app.use('/', index);
+app.post('/uploadImage', upload.single('file'), (req, res) => {
+  console.log(req);
+  if(req.file) {
+      res.json(req.file);
+  }
+  else throw 'error';
+});
 app.use('/users', users);
-app.use(bodyParser.raw({limit: "50mb"}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
