@@ -6,7 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var urlrequest = require('url-request-log');
 const multer = require('multer');
-const upload = multer({dest: __dirname + '/uploads/images'});
+const upload = multer.diskStorage({dest: __dirname + '/uploads/images'});
+var busboy = require('connect-busboy');
 
 
 var index = require('./routes/index');
@@ -27,9 +28,10 @@ app.use(logger('dev'));
 app.use(urlrequest.log());
 app.use(bodyParser.json({limit: '50mb', type: 'application/json'}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: false, parameterLimit:50000 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(busboy());
 
 
 let db;
@@ -45,13 +47,6 @@ app.use( async (req, res, next) => {
   
 })
 app.use('/', index);
-app.post('/uploadImage', upload.single('file'), (req, res) => {
-  console.log(req);
-  if(req.file) {
-      res.json(req.file);
-  }
-  else throw 'error';
-});
 app.use('/users', users);
 
 // catch 404 and forward to error handler

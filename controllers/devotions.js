@@ -3,6 +3,14 @@ const commonModel = require('../models/common.model');
 const mongodb = require('mongodb');
 const ObjectId = mongodb.ObjectID;
 const https = require('https');
+const fs = require('fs');
+const aws = require('aws-sdk');
+const asyncBusboy = require("async-busboy");
+
+// const s3 = new AWS.S3({
+//     AWSAccessKeyId: 'AKIAJHYNVES6AKXTKJQA',
+//     AWSSecretKey: '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'
+// });
 
 const devotions = {
     getDevotions: async (req, res) => {
@@ -166,7 +174,7 @@ const devotions = {
         }
         let verseData = await devotionsModel.getVerse(req.db, params);
         if (verseData.length > 0) {
-            res.json({success: true, data: verseData});
+            res.json({ success: true, data: verseData });
         } else {
             https.get('https://bible-api.com/' + verse, (resp) => {
                 let data = '';
@@ -192,37 +200,79 @@ const devotions = {
         }
 
     },
-    getTestimonies: async(req, res) => {
+    getTestimonies: async (req, res) => {
         let testiData = await devotionsModel.getTestimonies(req.db);
-        if(testiData.length > 0){
-            res.json({success: true, data: testiData});
-        }else {
-            res.json({status: false, msg: 'no data found!'});
+        if (testiData.length > 0) {
+            res.json({ success: true, data: testiData });
+        } else {
+            res.json({ status: false, msg: 'no data found!' });
         }
     },
-    updateTestimonies: async(req, res) => {
+    updateTestimonies: async (req, res) => {
         let update = await devotionsModel.updateTestimonies(req.db, req);
-        if(update.result){
-            res.json({status: true, msg: 'Updated Successfully!'});
-        }else {
-            res.json({status: false, msg: 'Something Went Wrong!'});
+        if (update.result) {
+            res.json({ status: true, msg: 'Updated Successfully!' });
+        } else {
+            res.json({ status: false, msg: 'Something Went Wrong!' });
         }
     },
-    getConfession: async(req, res) => {
+    getConfession: async (req, res) => {
         let confData = await devotionsModel.getConfession(req.db);
-        if(confData.length > 0){
-            res.json({success: true, data: confData});
-        }else {
-            res.json({status: false, msg: 'no data found!'});
+        if (confData.length > 0) {
+            res.json({ success: true, data: confData });
+        } else {
+            res.json({ status: false, msg: 'no data found!' });
         }
     },
-    updateConfession: async(req, res) => {
+    updateConfession: async (req, res) => {
         let update = await devotionsModel.updateConfession(req.db, req);
-        if(update.result){
-            res.json({status: true, msg: 'Updated Successfully!'});
-        }else {
-            res.json({status: false, msg: 'Something Went Wrong!'});
+        if (update.result) {
+            res.json({ status: true, msg: 'Updated Successfully!' });
+        } else {
+            res.json({ status: false, msg: 'Something Went Wrong!' });
         }
+    },
+    uploadImage: (req, res) => {
+        asyncBusboy(req).then(async formData => {
+            req.body = { ...req.body, ...formData.fields };
+            console.log(formData);
+            if (formData.files && formData.files.length > 0) {
+                aws.config.setPromisesDependency();
+                aws.config.update({
+                    AWSAccessKeyId: 'AKIAJHYNVES6AKXTKJQA',
+                    AWSSecretKey: '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'
+                    //region: process.env.REGION
+                });
+                const s3 = new aws.S3();
+                var params = {
+                    ACL: 'public-read',
+                    Bucket: 'dyd-coza',
+                    Body: formData.files[0],
+                    Key: `userAvatar/${req.file.originalname}`
+                };
+
+                s3.upload(params, (err, data) => {
+                    if (err) {
+                        console.log('Error occured while trying to upload to S3 bucket', err);
+                    }
+
+                    if (data) {
+                        fs.unlinkSync(req.file.path); // Empty temp folder
+                        const locationUrl = data.Location;
+                        let newUser = new Users({ ...req.body, avatar: locationUrl });
+                        newUser
+                            .save()
+                            .then(user => {
+                                res.json({ message: 'User created successfully', user });
+                            })
+                            .catch(err => {
+                                console.log('Error occured while trying to save to DB');
+                            });
+                    }
+                });
+            }
+        });
+
     },
     getCollectionName: (lang = '') => {
         let collection = 'devotions';
