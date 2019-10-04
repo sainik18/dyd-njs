@@ -234,43 +234,39 @@ const devotions = {
     },
     uploadImage: (req, res) => {
         asyncBusboy(req).then(async formData => {
-            req.body = { ...req.body, ...formData.fields };
-            console.log(formData);
-            if (formData.files && formData.files.length > 0) {
-                aws.config.setPromisesDependency();
-                aws.config.update({
-                    AWSAccessKeyId: 'AKIAJHYNVES6AKXTKJQA',
-                    AWSSecretKey: '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'
-                    //region: process.env.REGION
-                });
-                const s3 = new aws.S3();
-                var params = {
-                    ACL: 'public-read',
-                    Bucket: 'dyd-coza',
-                    Body: formData.files[0],
-                    Key: `userAvatar/${req.file.originalname}`
-                };
+            aws.config.setPromisesDependency();
+            aws.config.update({
+                AWSAccessKeyId: 'AKIAJHYNVES6AKXTKJQA',
+                AWSSecretKey: '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'
+                //region: process.env.REGION
+            });
+            const s3 = new aws.S3();
+            var params = {
+                ACL: 'public-read',
+                Bucket: 'dyd-coza',
+                Body: fs.createReadStream(req.file.path),
+                Key: `userAvatar/${req.file.originalname}`
+            };
 
-                s3.upload(params, (err, data) => {
-                    if (err) {
-                        console.log('Error occured while trying to upload to S3 bucket', err);
-                    }
+            s3.upload(params, (err, data) => {
+                if (err) {
+                    console.log('Error occured while trying to upload to S3 bucket', err);
+                }
 
-                    if (data) {
-                        fs.unlinkSync(req.file.path); // Empty temp folder
-                        const locationUrl = data.Location;
-                        let newUser = new Users({ ...req.body, avatar: locationUrl });
-                        newUser
-                            .save()
-                            .then(user => {
-                                res.json({ message: 'User created successfully', user });
-                            })
-                            .catch(err => {
-                                console.log('Error occured while trying to save to DB');
-                            });
-                    }
-                });
-            }
+                if (data) {
+                    fs.unlinkSync(req.file.path); // Empty temp folder
+                    const locationUrl = data.Location;
+                    let newUser = new Users({ ...req.body, avatar: locationUrl });
+                    newUser
+                        .save()
+                        .then(user => {
+                            res.json({ message: 'User created successfully', user });
+                        })
+                        .catch(err => {
+                            console.log('Error occured while trying to save to DB');
+                        });
+                }
+            });
         });
 
     },
