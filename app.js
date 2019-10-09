@@ -5,10 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var urlrequest = require('url-request-log');
-const multer = require('multer');
-const upload = multer.diskStorage({dest: __dirname + '/uploads/images'});
-var busboy = require('connect-busboy');
-
+let busboy = require('connect-busboy')
+let fs = require('fs');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -48,6 +46,16 @@ app.use( async (req, res, next) => {
 })
 app.use('/', index);
 app.use('/users', users);
+app.post('/uploadImage', function(req, res) {
+  req.pipe(req.busboy);
+  req.busboy.on('file', function(fieldname, file, filename) {
+      var fstream = fs.createWriteStream('./public/images/' + filename); 
+      file.pipe(fstream);
+      fstream.on('close', function () {
+          res.send({status:true, url: 'images/' + filename});
+      });
+  });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

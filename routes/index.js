@@ -21,7 +21,7 @@ router.post('/getTestimonies', devotions.getTestimonies);
 router.post('/updateTestimonies', devotions.updateTestimonies);
 router.post('/getConfession', devotions.getConfession);
 router.post('/updateConfession', devotions.updateConfession);
-router.post('/uploadImage', devotions.uploadImage);
+//router.post('/uploadImage', devotions.uploadImage);
 
 
 module.exports = router;
