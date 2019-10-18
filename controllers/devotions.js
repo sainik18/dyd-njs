@@ -167,6 +167,31 @@ const devotions = {
             res.json({ status: false, msg: 'Something Went Wrong!' });
         }
     },
+    removeDevotion: async (req, res) => {
+        const { lang, _id } = { ...req.body };
+        let where = {
+            _id: new ObjectId(_id)
+        }
+        let collection = 'devotions';
+        if (lang == 'Spanish') {
+            collection = 'devotionsSpanish';
+        } else if (lang == 'French') {
+            collection = 'devotionsFrench';
+        } else if (lang == 'Hausa') {
+            collection = 'devotionsHausa';
+        } else if (lang == 'Yoruba') {
+            collection = 'devotionsYoruba';
+        } else if (lang == 'Igbo') {
+            collection = 'devotionsIgbo';
+        } else if (lang == 'Portuguese') {
+            collection = 'devotionsPortuguese';
+        } else if (lang == 'German') {
+            collection = 'devotionsGerman';
+        }
+
+        let resp = await devotionsModel.removeDevotion(req.db, where, collection);
+
+    },
     getVerse: async (req, res) => {
         const { verse } = { ...req.body };
         let params = {

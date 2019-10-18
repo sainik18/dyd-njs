@@ -45,6 +45,11 @@ const auth = {
         }
         
 
+    },
+    generateEncPassword: async(req, res) => {
+        const { email, password } = {...req.body};
+            let pwd = await commonModel.encrypt(password);
+            res.json({status: true, password: pwd });
     }
 }
 

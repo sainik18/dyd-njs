@@ -40,6 +40,16 @@ const devotionsModel = {
             reject(error);
         }
     },
+    removeDevotion(conn, where, coll) {
+        try {
+            return new Promise( async (resolve, reject) => {
+                let remove = await conn.collection(coll).remove(where);
+                resolve(true);
+            })
+        } catch (error) {
+            reject(error);      
+        }
+    },
     getVerse(conn, params){
         try {
             return new Promise(async (resolve, reject) => {
