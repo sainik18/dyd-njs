@@ -20,7 +20,7 @@ const devotions = {
         //let lang = req.body.lang;
         const { lang, date } = { ...req.body };
         let byDate = new Date();
-        byDate.setTime(byDate.getTime() - (4*60*60*1000))
+        byDate.setTime(byDate.getTime() + (1*60*60*1000))
         if(date){
             byDate= date;
         };
