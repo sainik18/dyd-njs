@@ -1,9 +1,9 @@
 
 const devotionsModel = {
-    getDevotions(conn, coll){
+    getDevotions(conn, where, coll){
         try {
             return new Promise((resolve, reject) => {
-                let devotions = conn.collection(coll).find().sort( { quote_date: -1 } ).toArray();
+                let devotions = conn.collection(coll).find(where).sort( { quote_date: -1 } ).toArray();
                 resolve(devotions);
             });
         } catch (error) {

@@ -20,10 +20,10 @@ const devotions = {
         //let lang = req.body.lang;
         const { lang, date } = { ...req.body };
         let byDate = new Date();
+        byDate.setTime(byDate.getTime() - (4*60*60*1000))
         if(date){
             byDate= date;
-        }
-        console.log(byDate.getTimezoneOffset());
+        };
 
         let collection = 'devotions';
         if (lang == 'Spanish') {
@@ -42,7 +42,22 @@ const devotions = {
             collection = 'devotionsGerman';
         }
 
-        let devotions = await devotionsModel.getDevotions(req.db, collection);
+        let day = byDate.getDate();
+        let month = byDate.getMonth()+1;
+        let year = byDate.getFullYear();
+        if(day <10){
+            day = '0'+day;
+        }
+        if(month < 10){
+            month = '0'+month
+        }
+
+        let nDate = year+'-'+month+'-'+day;
+
+        let where = {
+            'quote_date': { $lte: nDate }
+        }
+        let devotions = await devotionsModel.getDevotions(req.db, where, collection);
 
         if (devotions.length > 0) {
             res.json({ status: true, data: devotions });
