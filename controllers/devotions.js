@@ -18,7 +18,12 @@ const devotions = {
         // let translate = await commonModel.translate(req.db, text, 'en-ru');
         // res.json({data: translate});
         //let lang = req.body.lang;
-        const { lang } = { ...req.body };
+        const { lang, date } = { ...req.body };
+        let byDate = new Date();
+        if(date){
+            byDate= date;
+        }
+        console.log(byDate.getTimezoneOffset());
 
         let collection = 'devotions';
         if (lang == 'Spanish') {
