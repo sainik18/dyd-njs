@@ -13,6 +13,40 @@ const asyncBusboy = require("async-busboy");
 // });
 
 const devotions = {
+    getAllDevotions: async (req, res) => {
+
+        // let translate = await commonModel.translate(req.db, text, 'en-ru');
+        // res.json({data: translate});
+        //let lang = req.body.lang;
+        const { lang } = { ...req.body };
+
+        let collection = 'devotions';
+        if (lang == 'Spanish') {
+            collection = 'devotionsSpanish';
+        } else if (lang == 'French') {
+            collection = 'devotionsFrench';
+        } else if (lang == 'Hausa') {
+            collection = 'devotionsHausa';
+        } else if (lang == 'Yoruba') {
+            collection = 'devotionsYoruba';
+        } else if (lang == 'Igbo') {
+            collection = 'devotionsIgbo';
+        } else if (lang == 'Portuguese') {
+            collection = 'devotionsPortuguese';
+        } else if (lang == 'German') {
+            collection = 'devotionsGerman';
+        }
+
+        let where = {
+        };
+        let devotions = await devotionsModel.getDevotions(req.db, where, collection);
+
+        if (devotions.length > 0) {
+            res.json({ status: true, data: devotions });
+        } else {
+            res.json({ status: false, msg: 'No data found!' });
+        }
+    },
     getDevotions: async (req, res) => {
 
         // let translate = await commonModel.translate(req.db, text, 'en-ru');
