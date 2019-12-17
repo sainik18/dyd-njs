@@ -54,9 +54,9 @@ const devotions = {
         //let lang = req.body.lang;
         const { lang, date } = { ...req.body };
         let byDate = new Date();
-        byDate.setTime(byDate.getTime() + (1*60*60*1000))
-        if(date){
-            byDate= date;
+        byDate.setTime(byDate.getTime() + (1 * 60 * 60 * 1000))
+        if (date) {
+            byDate = date;
         };
 
         let collection = 'devotions';
@@ -77,16 +77,16 @@ const devotions = {
         }
 
         let day = byDate.getDate();
-        let month = byDate.getMonth()+1;
+        let month = byDate.getMonth() + 1;
         let year = byDate.getFullYear();
-        if(day <10){
-            day = '0'+day;
+        if (day < 10) {
+            day = '0' + day;
         }
-        if(month < 10){
-            month = '0'+month
+        if (month < 10) {
+            month = '0' + month
         }
 
-        let nDate = year+'-'+month+'-'+day;
+        let nDate = year + '-' + month + '-' + day;
 
         let where = {
             'quote_date': { $lte: nDate }
@@ -127,11 +127,21 @@ const devotions = {
             collection = 'devotionsGerman';
         }
 
-        let ins = await devotionsModel.insertDevotion(req.db, params, collection);
-        if (ins.insertedCount > 0) {
-            res.json({ status: true, msg: 'Devotion inserted successfully!' })
+        // check whether devotion exists on given date
+        let rparams = {
+            quote_date
+        }
+
+        let checkExists = await devotionsModel.getDevotionById(req.db, rparams, collection);
+        if (checkExists.length > 0) {
+            res.json({ status: false, msg: 'Devotion exists on given date' });
         } else {
-            res.json({ status: false, msg: 'Something Went Wrong!' });
+            let ins = await devotionsModel.insertDevotion(req.db, params, collection);
+            if (ins.insertedCount > 0) {
+                res.json({ status: true, msg: 'Devotion inserted successfully!' })
+            } else {
+                res.json({ status: false, msg: 'Something Went Wrong!' });
+            }
         }
 
     },
