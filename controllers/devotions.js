@@ -18,6 +18,35 @@ const devotions = {
         // let translate = await commonModel.translate(req.db, text, 'en-ru');
         // res.json({data: translate});
         //let lang = req.body.lang;
+        let byDate = new Date();
+        byDate.setTime(byDate.getTime() + (1 * 60 * 60 * 1000))
+        let pastDate = new Date();
+        pastDate.setDate(pastDate.getDate() - 30);
+
+        let day = byDate.getDate();
+        let month = byDate.getMonth() + 1;
+        let year = byDate.getFullYear();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        if (month < 10) {
+            month = '0' + month
+        }
+
+        let nDate = year + '-' + month + '-' + day;
+
+        let pday = pastDate.getDate();
+        let pmonth = pastDate.getMonth() + 1;
+        let pyear = pastDate.getFullYear();
+        if (pday < 10) {
+            pday = '0' + pday;
+        }
+        if (pmonth < 10) {
+            pmonth = '0' + pmonth
+        }
+
+        let pDate = pyear + '-' + pmonth + '-' + pday;
+
         const { lang } = { ...req.body };
 
         let collection = 'devotions';
@@ -38,7 +67,9 @@ const devotions = {
         }
 
         let where = {
+            'quote_date': { $lte: nDate, $gte: pDate }
         };
+        console.log(where);
         let devotions = await devotionsModel.getDevotions(req.db, where, collection);
 
         if (devotions.length > 0) {
