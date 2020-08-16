@@ -90,6 +90,9 @@ const devotions = {
             byDate = date;
         };
 
+        let pastDate = new Date();
+        pastDate.setDate(pastDate.getDate() - 15);
+
         let collection = 'devotions';
         if (lang == 'Spanish') {
             collection = 'devotionsSpanish';
@@ -119,8 +122,20 @@ const devotions = {
 
         let nDate = year + '-' + month + '-' + day;
 
+        let pday = pastDate.getDate();
+        let pmonth = pastDate.getMonth() + 1;
+        let pyear = pastDate.getFullYear();
+        if (pday < 10) {
+            pday = '0' + pday;
+        }
+        if (pmonth < 10) {
+            pmonth = '0' + pmonth
+        }
+
+        let pDate = pyear + '-' + pmonth + '-' + pday;
+
         let where = {
-            'quote_date': { $lte: nDate }
+            'quote_date': { $lte: nDate, $gte: pDate }
         }
         let devotions = await devotionsModel.getDevotions(req.db, where, collection);
 
