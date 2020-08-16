@@ -21,7 +21,7 @@ const devotions = {
         let byDate = new Date();
         byDate.setTime(byDate.getTime() + (1 * 60 * 60 * 1000))
         let pastDate = new Date();
-        pastDate.setDate(pastDate.getDate() - 30);
+        pastDate.setDate(pastDate.getDate() - 15);
 
         let day = byDate.getDate();
         let month = byDate.getMonth() + 1;
