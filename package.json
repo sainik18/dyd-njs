@@ -9,7 +9,7 @@
     "@types/mongodb": "3.1.28",
     "async-busboy": "^0.7.0",
     "aws-sdk": "^2.540.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "~1.18.2",
     "busboy": "^0.3.1",
     "connect-busboy": "0.0.2",
